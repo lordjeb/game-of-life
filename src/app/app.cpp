@@ -1,7 +1,15 @@
 #include "pch.h"
+#include "GameOfLife.h"
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nCmdShow)
+int WINAPI WinMain(
+    [[maybe_unused]] _In_ HINSTANCE hInstance,
+    [[maybe_unused]] _In_opt_ HINSTANCE hPrevInstance,
+    [[maybe_unused]] _In_ LPSTR lpCmdLine,
+    [[maybe_unused]] _In_ int nShowCmd
+)
 {
+    [[maybe_unused]] GameOfLife game;
+
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
@@ -20,5 +28,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
         window.display();
     }
 
-    return 0;
+    return ERROR_SUCCESS;
 }
