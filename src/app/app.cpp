@@ -8,9 +8,9 @@ int WINAPI WinMain(
     [[maybe_unused]] _In_ int nShowCmd
 )
 {
-    [[maybe_unused]] GameOfLife game;
+    [[maybe_unused]] GameOfLife game{400, 400};
 
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(game.GetWidth(), game.GetHeight()), "SFML works!");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 

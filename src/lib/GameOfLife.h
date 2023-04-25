@@ -3,5 +3,12 @@
 class GameOfLife
 {
 public:
-	GameOfLife() = default;
+    GameOfLife(int height, int width);
+
+    int GetHeight() const;
+    int GetWidth() const;
+
+protected:
+    const int height_;
+    const int width_;
 };
