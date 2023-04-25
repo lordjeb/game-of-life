@@ -21,12 +21,18 @@
     <ClInclude Include="GameOfLife.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameOfLifeImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameOfLife.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOfLifeImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

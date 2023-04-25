@@ -8,10 +8,7 @@ int WINAPI WinMain([[maybe_unused]] _In_ HINSTANCE hInstance, [[maybe_unused]] _
                    [[maybe_unused]] _In_ LPSTR lpCmdLine, [[maybe_unused]] _In_ int nShowCmd)
 {
     GameOfLife game{ 400, 400 };
-
-    game.SetCell(199, 199, true);
-    game.SetCell(200, 200, true);
-    game.SetCell(201, 201, true);
+    bool paused{ false };
 
     sf::RenderWindow window(sf::VideoMode(game.GetWidth() * CELL_SIZE, game.GetHeight() * CELL_SIZE),
                             "Conway Game of Life");
@@ -41,19 +38,71 @@ int WINAPI WinMain([[maybe_unused]] _In_ HINSTANCE hInstance, [[maybe_unused]] _
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed) window.close();
+            switch (event.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::KeyPressed:
+                auto pos = sf::Mouse::getPosition(window);
+
+                switch (event.key.code)
+                {
+                // Pause
+                case sf::Keyboard::Space:
+                    paused = !paused;
+                    break;
+
+                // Clear
+                case sf::Keyboard::C:
+                    game.Clear();
+                    break;
+
+                // Insert Blinker
+                case sf::Keyboard::B:
+                    if (pos.x >= 0 && pos.x < static_cast<int>(window.getSize().x) && pos.y >= 0 &&
+                        pos.y < static_cast<int>(window.getSize().y))
+                    {
+                        auto x = pos.x / CELL_SIZE;
+                        auto y = pos.y / CELL_SIZE;
+                        game.SetCell(x, y - 1, true);
+                        game.SetCell(x, y, true);
+                        game.SetCell(x, y + 1, true);
+                    }
+                    break;
+
+                // Insert Glider
+                case sf::Keyboard::G:
+                    if (pos.x >= 0 && pos.x < static_cast<int>(window.getSize().x) && pos.y >= 0 &&
+                        pos.y < static_cast<int>(window.getSize().y))
+                    {
+                        auto x = pos.x / CELL_SIZE;
+                        auto y = pos.y / CELL_SIZE;
+                        game.SetCell(x, y, true);
+                        game.SetCell(x + 1, y, true);
+                        game.SetCell(x + 2, y, true);
+                        game.SetCell(x + 2, y + 1, true);
+                        game.SetCell(x + 1, y + 2, true);
+                    }
+                    break;
+                }
+                break;
+            }
         }
 
-        game.Generate();
-
-        // Update the map
-        for (int x = 0; x < game.GetWidth(); x++)
+        // Iterate the next generation
+        if (!paused)
         {
-            for (int y = 0; y < game.GetHeight(); y++)
+            game.Generate();
+            for (int x = 0; x < game.GetWidth(); x++)
             {
-                sf::Vertex* quad = &pixelmap[(x + y * game.GetWidth()) * 4];
-                quad[0].color = quad[1].color = quad[2].color = quad[3].color =
-                    game.GetCell(x, y) ? sf::Color::Green : sf::Color::Black;
+                for (int y = 0; y < game.GetHeight(); y++)
+                {
+                    sf::Vertex* quad = &pixelmap[(x + y * game.GetWidth()) * 4];
+                    quad[0].color = quad[1].color = quad[2].color = quad[3].color =
+                        game.GetCell(x, y) ? sf::Color::Green : sf::Color::Black;
+                }
             }
         }
 

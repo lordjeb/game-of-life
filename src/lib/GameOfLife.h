@@ -1,12 +1,15 @@
 #pragma once
 #include <vector>
 
+// https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+//
 class GameOfLife
 {
 public:
     GameOfLife(int height, int width);
     ~GameOfLife() = default;
 
+    void Clear();
     void Generate();
     bool GetCell(int x, int y) const;
     int GetGeneration() const;
